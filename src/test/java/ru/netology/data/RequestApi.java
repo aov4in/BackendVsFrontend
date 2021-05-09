@@ -25,8 +25,8 @@ public class RequestApi {
     public static void getRequest() {
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .params("login", "vasya")
-                .params("password", "qwerty123")
+                .param("login", "vasya")
+                .param("password", "qwerty123")
                 .when() // "когда"
                 .post("/api/auth") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
