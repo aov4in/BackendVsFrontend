@@ -25,8 +25,7 @@ public class RequestApi {
     public static void getRequest() {
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .param("login", "vasya")
-                .param("password", "qwerty123")
+                .body(new DataHelper.AuthInfo("vasya", "qwerty123"))
                 .when() // "когда"
                 .post("/api/auth") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
