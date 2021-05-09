@@ -25,7 +25,8 @@ public class RequestApi {
     public static void getRequest() {
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(DataHelper.getAuthInfo()) // передаём в теле объект, который будет преобразован в JSON
+                .params("login", "vasya")
+                .params("password", "qwerty123")
                 .when() // "когда"
                 .post("/api/auth") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
@@ -50,7 +51,7 @@ public class RequestApi {
         return (String) code;
     }
 
-    public static String getToken() throws SQLException {
+    public static String getToken() {
         String token = given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
                 .body(DataHelper.getVerificationInfoFor(DataHelper.getAuthInfo(),getVerificationCode())) // передаём в теле объект, который будет преобразован в JSON
