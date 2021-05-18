@@ -1,8 +1,12 @@
 package ru.netology.data;
 
+import com.google.gson.Gson;
+import com.mysql.cj.xdevapi.Collection;
+import com.sun.tools.xjc.reader.xmlschema.bindinfo.BIConversion;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import lombok.val;
 import org.apache.commons.dbutils.QueryRunner;
@@ -12,6 +16,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static io.restassured.RestAssured.given;
+import static ru.netology.data.DataHelper.*;
 
 public class RequestApi {
     private static RequestSpecification requestSpec = new RequestSpecBuilder()
@@ -22,10 +27,10 @@ public class RequestApi {
             .log(LogDetail.ALL)
             .build();
 
-    public static void getRequest() {
+    public static void getRequest(AuthInfo info) {
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(new DataHelper.AuthInfo("vasya", "qwerty123"))
+                .body(new Gson().toJson(new AuthInfo(info.getLogin(), info.getPassword())))
                 .when() // "когда"
                 .post("/api/auth") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
@@ -53,7 +58,7 @@ public class RequestApi {
     public static String getToken() {
         String token = given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(DataHelper.getVerificationInfoFor(DataHelper.getAuthInfo(),getVerificationCode())) // передаём в теле объект, который будет преобразован в JSON
+                .body(getVerificationInfoFor(getAuthInfo(),getVerificationCode())) // передаём в теле объект, который будет преобразован в JSON
                 .when() // "когда"
                 .post("/api/auth/verification") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
@@ -98,7 +103,7 @@ public class RequestApi {
         given()
                 .spec(requestSpec)
                 .header("Authorization", "Bearer " + token)
-                .body(DataHelper.getTransaction("5559 0000 0000 0002", "5559 0000 0000 0001", sum))
+                .body(getTransaction("5559 0000 0000 0002", "5559 0000 0000 0001", sum))
                 .when() // "когда"
                 .post("/api/transfer")
                 .then() // "тогда ожидаем"
