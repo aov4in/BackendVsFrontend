@@ -23,7 +23,7 @@ public class DataHelper {
         String password;
     }
 
-    public static AuthInfo getAuthInfo(){
+    public static AuthInfo getAuthInfo(String login, String password){
 
         return new AuthInfo("vasya", "qwerty123");
     }

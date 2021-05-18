@@ -27,10 +27,10 @@ public class RequestApi {
             .log(LogDetail.ALL)
             .build();
 
-    public static void getRequest(AuthInfo info) {
+    public static void getRequest() {
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(new Gson().toJson(new AuthInfo(info.getLogin(), info.getPassword())))
+                .body(getAuthInfo("vasya", "qwerty123"))
                 .when() // "когда"
                 .post("/api/auth") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
@@ -58,7 +58,7 @@ public class RequestApi {
     public static String getToken() {
         String token = given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(getVerificationInfoFor(getAuthInfo(),getVerificationCode())) // передаём в теле объект, который будет преобразован в JSON
+                .body(getVerificationInfoFor(getAuthInfo("vasya", "qwerty"),getVerificationCode())) // передаём в теле объект, который будет преобразован в JSON
                 .when() // "когда"
                 .post("/api/auth/verification") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
