@@ -1,12 +1,8 @@
 package ru.netology.data;
 
-import com.google.gson.Gson;
-import com.mysql.cj.xdevapi.Collection;
-import com.sun.tools.xjc.reader.xmlschema.bindinfo.BIConversion;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
-import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import lombok.val;
 import org.apache.commons.dbutils.QueryRunner;
@@ -27,10 +23,10 @@ public class RequestApi {
             .log(LogDetail.ALL)
             .build();
 
-    public static void getRequest() {
+    public static void getRequest(AuthInfo authInfo) {
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(getAuthInfo("vasya", "qwerty123"))
+                .body(authInfo)
                 .when() // "когда"
                 .post("/api/auth") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
@@ -55,10 +51,10 @@ public class RequestApi {
         return (String) code;
     }
 
-    public static String getToken() {
+    public static String getToken(VerificationInfo verificationInfo) {
         String token = given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(getVerificationInfoFor(getAuthInfo("vasya", "qwerty"),getVerificationCode())) // передаём в теле объект, который будет преобразован в JSON
+                .body(verificationInfo) // передаём в теле объект, который будет преобразован в JSON
                 .when() // "когда"
                 .post("/api/auth/verification") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"

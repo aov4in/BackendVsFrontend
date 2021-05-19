@@ -1,17 +1,6 @@
 package ru.netology.data;
 
-
-import com.sun.tools.xjc.reader.xmlschema.bindinfo.BIConversion;
 import lombok.Value;
-import lombok.val;
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
-
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 
 public class DataHelper {
     private DataHelper() {
@@ -23,7 +12,7 @@ public class DataHelper {
         String password;
     }
 
-    public static AuthInfo getAuthInfo(String login, String password){
+    public static AuthInfo getAuthInfo(){
 
         return new AuthInfo("vasya", "qwerty123");
     }
